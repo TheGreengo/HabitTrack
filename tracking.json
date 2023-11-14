@@ -1,7 +1,10 @@
 {
-    "habit title": "test habit",
-    "end date": null,
-    "total days": 150,
-    "current streak": 2,
-    "last date reported": null
+    "habit title": "Test Habit",
+    "start": null,
+    "end": null,
+    "goal": 10,
+    "period": 15,
+    "total": 2, 
+    "streak": 2,
+    "last": null
 }
