@@ -1,10 +1,9 @@
 {
     "habit title": "Test Habit",
-    "start": null,
-    "end": null,
-    "goal": 10,
-    "period": 15,
-    "total": 2, 
-    "streak": 2,
-    "last": null
+    "start": [2023,11,1],
+    "end": [2023,12,1],
+    "goal": 20,
+    "total": 12, 
+    "streak": 3,
+    "last": [2023,11,14]
 }

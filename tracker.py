@@ -25,7 +25,6 @@ if not tracker_made:
         - "start"
         - "end"
         - "goal"
-        - "period"
         - "total"
         - "streak"
         - "last"
@@ -36,9 +35,30 @@ if not tracker_made:
     unprep.mainloop()
 else:
     with open('tracking.json', 'r') as openfile:
-            tracker = json.load(openfile)
+        tracker = json.load(openfile)
 
-    creating = Tk()
-    creating.title("Habit Tracker")
-    creating.geometry("640x360")
-    creating.mainloop()
+    title = tracker["habit title"]
+    start = dt.datetime(tracker["start"])
+    end = dt.datetime(tracker["end"])
+    goal = tracker["goal"]
+    period = (start - end).days
+    total = tracker["total"]
+    streak = tracker["streak"]
+    last = dt.datetime(tracker["last"])
+
+    main = Tk()
+    main.title(f"{title} Tracker")
+    main.geometry("640x360")
+
+    days_in = Label(main, "So far you are {} days into your habit.")
+    days_in.pack()
+    days_left = Label(main, "You still have {} days left to go.")
+    days_left.pack()
+    successes = Label(main, "Thusfar, you've had {} successes.")
+    successes.pack()
+    successes_left = Label(main, "And you need {} more successess to reach your goal.")
+    successes_left.pack()
+
+    if last.day != dt.datetime.now().day:
+        enter_statement = Label()
+    main.mainloop()
