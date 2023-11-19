@@ -1,73 +1,56 @@
 from tkinter import *
 import json
-import os.path
 import datetime as dt
 
-tracker_made = os.path.isfile('./tracking.json')
 tracker = {}
-is_new = False
+entered = False
 
-if not tracker_made:
-    unprep = Tk()
-    unprep.title("Habit Tracker")
-    label = Label(
-        unprep,
-        '''
-        Error: tracking.json file expected.
-        In order to use the tracker, please create a tracking.json
-        file in the same directory as the tracker.py script
-        and give it the following fields:
-        - "habit title"
-        - "start"
-        - "end"
-        - "goal"
-        - "total"
-        - "streak"
-        - "last"
-        '''
-        )
-    label.pack()
-    unprep.geometry("640x360")
-    unprep.mainloop()
-else:
-    with open('tracking.json', 'r') as openfile:
-        tracker = json.load(openfile)
+def loadTrack():
+    file = open('tracking.json','r')
+    return json.load(file)
 
-    title = tracker["habit title"]
-    start = dt.datetime(*tracker["start"])
-    end = dt.datetime(*tracker["end"])
-    goal = tracker["goal"]
-    period = (start - end).days
-    total = tracker["total"]
-    streak = tracker["streak"]
-    last = dt.datetime(*tracker["last"])
-    left = (end - dt.datetime.now()).days
+def thang():
+    print("called")
 
-    main = Tk()
-    main.title(f"{title} Tracker")
-    main.geometry("640x360")
+tracker = loadTrack()
+title = tracker["habit title"]
+start = dt.datetime(*tracker["start"])
+end = dt.datetime(*tracker["end"])
+goal = tracker["goal"]
+period = (start - end).days
+total = tracker["total"]
+streak = tracker["streak"]
+last = dt.datetime(*tracker["last"])
+left = (end - dt.datetime.now()).days
 
-    days_in = Label(main, text=f"So far you are {(dt.datetime.now() - start).days + 1} days into your habit.")
-    days_in.pack()
-    days_left = Label(main, text=f"You still have {left} days left to go.")
-    days_left.pack()
-    successes = Label(main, text=f"Thusfar, you've had {total} successes.")
-    successes.pack()
-    successes_left = Label(main, text=f"And you need {goal - total} more successess to reach your goal.")
-    successes_left.pack()
+displaystring = '''
+So far you are %d days into your habit.
+You still have %d days left to go.
+Thusfar, you've had %d successes.
+And you need %d more successess to reach your goal.
+''' % (((dt.datetime.now() - start).days + 1),left, total, (goal - total))
 
-    if last.day != dt.datetime.now().day:
-        enter_statement = Label(main, text=f"You last updated this tracker {(dt.datetime.now() - last).days} days ago")
-        enter_statement.pack()
-        other = Label(main, text="How many of those days were successes?")
-        other.pack()
-        new_days = IntVar()
-        entry = Entry(main, textvariable=new_days)
-        entry.pack()
+enterstring = '''
+You last updated this tracker {(dt.datetime.now() - last).days} days ago.
+How many of those days were successes?
+''' % ()
 
-        def update():
-            tracker["total"] += new_days.get()
-            enter_statement.destroy()
-            other.destroy()
+main = Tk()
+main.title(f"{title} Tracker")
+main.geometry("640x360")
 
-    main.mainloop()
+lab = Label(master=main, text=displaystring)
+lab.pack()
+
+enter_statement = Label(master=main, text=enterstring)
+enter_statement.pack()
+
+new_days = IntVar()
+new_days.set(0)
+entry = Entry(master=main, textvariable=new_days)
+entry.pack()
+
+btn = Button(master=main, text="Update", command=thang)
+btn.pack()
+
+main.mainloop()
